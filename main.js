@@ -195,7 +195,7 @@ async function doKennon(url, email, password) {
 
 /// ユーザーの登録状況をチェック
 function checkUserRegistered(reg) {
-    if ((reg.email == "OK") & (reg.password == "OK")) {
+    if ((reg.email == "OK") & (reg.password == "OK") & (reg.eula == "OK")) {
         return "OK"
     } else {
         if (reg.eula != "OK") {
@@ -213,9 +213,12 @@ async function fixUserData(uid) {
 
     for (key in reg) {
         if (typeof regData.get(key) == "undefined") {
-            await regRef.doc(uid).update({
-                [key]: "",
-            })
+            await regRef.doc(uid).set(
+                {
+                    [key]: "",
+                },
+                { merge: true }
+            )
         }
     }
 
@@ -229,9 +232,12 @@ async function fixUserData(uid) {
 
     for (key in user) {
         if (typeof userData.get(key) == "undefined") {
-            await usersRef.doc(uid).update({
-                [key]: "",
-            })
+            await usersRef.doc(uid).set(
+                {
+                    [key]: "",
+                },
+                { merge: true }
+            )
         }
     }
 }
